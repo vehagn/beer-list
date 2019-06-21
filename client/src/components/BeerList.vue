@@ -20,13 +20,19 @@
     }
 
     @Component({
-        components: {GiphyImage}
+        components: {GiphyImage, }
     })
     export default class BeerList extends Vue {
         public beers: Beer[] = [];
 
         private async created() {
-            const response = await axios.get('/good-beers');
+            const response = await axios.get('http://localhost:8080/good-beers',
+                {
+                    headers: {
+                        Authorization: `Bearer ${await this.$auth.getAccessToken()}`,
+                    },
+                },
+            );
             this.beers = await response.data;
         }
     }

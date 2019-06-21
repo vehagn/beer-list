@@ -24,7 +24,9 @@ public class BeerCommandLineRunner implements CommandLineRunner {
                 "Mead",
                 "Tuborg",
                 "Aas",
-                "Borg"
+                "Borg",
+                "Mikeller",
+                "Kjellerpils"
         ).forEach(name -> repository.save(new Beer(name)));
         repository.findAll().forEach(System.out::println);
     }

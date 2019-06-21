@@ -12,19 +12,17 @@
         private giphyUrl: string = '';
 
         private async created() {
-            const apiKey = 'jlcNO4lr7nToY1lqow0huH9yJNPWExRj'
+            const apiKey = 'jlcNO4lr7nToY1lqow0huH9yJNPWExRj';
             const giphyApi = `//api.giphy.com/v1/gifs/search?api_key=${apiKey}&limit=1&q=`;
 
             const response = await axios.get(giphyApi + this.name);
             const data = await response.data.data;
             if (data.length) {
                 this.giphyUrl = data[0].images.original.url;
-            }
-            else {
+            } else {
                 this.giphyUrl = '//media.giphy.com/media/YaOxRsmrv9IeA/giphy.gif';
             }
         }
-
     }
 </script>
 

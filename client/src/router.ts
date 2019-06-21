@@ -1,10 +1,20 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import OktaVuePlugin from '@okta/okta-vue';
+import BeerList from '@/components/BeerList.vue';
 
 Vue.use(Router);
+Vue.use(OktaVuePlugin, {
+  issuer: 'https://dev-559032.okta.com/oauth2/default',
+      client_id: '0oar9qg7gJFtsDeAz356',
+      redirect_uri: window.location.origin + '/implicit/callback',
+  scope: 'openid profile email',
+});
 
-export default new Router({
+const router = new Router({
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
@@ -19,5 +29,18 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     },
+    {
+      path: '/beer-list',
+      name: 'beer-list',
+      component: BeerList,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    { path: '/implicit/callback', component: OktaVuePlugin.handleCallback() },
   ],
 });
+
+router.beforeEach(Vue.prototype.$auth.authRedirectGuard());
+
+export default router;
